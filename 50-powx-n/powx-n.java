@@ -1,25 +1,18 @@
 class Solution {
     public double myPow(double x, int n) {
-        if(n == 0) return 1.0;
-        if(n == 1) return x;
-        if(n < 0){
-            x = 1/x;
-            n = -n;
+        double ans = 1.0;
+        long N = n;
+        if(N < 0) N = -N;
+        while(N > 0){
+            if(N % 2 == 1){
+                ans = ans * x;
+                N = N-1;
+            }else{
+                x = x*x;
+                N = N / 2;
+            }
         }
-        return fastpow(x, n);
-    }
-    public double fastpow(double x, int n){
-        if(n == 0) return 1.0;
-        if(n == 1) return x;
-        if(n < 0){
-            x = 1/x;
-            n = -n;
-        }
-        double half = fastpow(x, n/2);
-        if(n % 2 == 0){
-            return half*half;
-        }else{
-            return half*half*x;
-        }
+        if(n < 0) ans = 1 / ans;
+        return ans;
     }
 }
