@@ -8,7 +8,7 @@ class Solution {
             }
             st.push(ch);
         }
-        while(k > 0 && !st.isEmpty()){
+        while(k > 0){
             st.pop();
             k--;
         }
