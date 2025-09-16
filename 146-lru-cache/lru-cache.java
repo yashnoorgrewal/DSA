@@ -1,8 +1,5 @@
-import java.util.HashMap;
-
 class LRUCache {
-
-    // Doubly linked list node
+    
     class Node {
         int key;
         int value;
@@ -17,22 +14,20 @@ class LRUCache {
         }
     }
 
-    private HashMap<Integer, Node> mpp;
-    private int capacity;
-    private Node head;
-    private Node tail;
+    HashMap<Integer, Node> map;
+    int capacity;
+    Node head;
+    Node tail;
 
-    // Constructor to initialize the LRU Cache
     public LRUCache(int capacity) {
         this.capacity = capacity;
-        mpp = new HashMap<>();
-        head = new Node(0, 0); // Dummy head node
-        tail = new Node(0, 0); // Dummy tail node
+        map = new HashMap<>();
+        head = new Node(0, 0); //Dummy head
+        tail = new Node(0, 0); //Dummy tail
         head.next = tail;
         tail.prev = head;
     }
 
-    // Deletes a node from the doubly linked list
     private void deleteNode(Node node) {
         Node prevNode = node.prev;
         Node nextNode = node.next;
@@ -40,7 +35,6 @@ class LRUCache {
         nextNode.prev = prevNode;
     }
 
-    // Inserts a node right after the head
     private void insertAfterHead(Node node) {
         Node afterHead = head.next;
         head.next = node;
@@ -49,34 +43,32 @@ class LRUCache {
         afterHead.prev = node;
     }
 
-    // Retrieves a value from the cache
     public int get(int key) {
-        if (!mpp.containsKey(key)) {
+        if (!map.containsKey(key)) {
             return -1;
         }
         
-        Node node = mpp.get(key);
+        Node node = map.get(key);
         deleteNode(node);
         insertAfterHead(node);
         return node.value;
     }
 
-    // Inserts or updates a value in the cache
     public void put(int key, int value) {
-        if (mpp.containsKey(key)) {
-            Node node = mpp.get(key);
+        if (map.containsKey(key)) {
+            Node node = map.get(key);
             node.value = value;
             deleteNode(node);
             insertAfterHead(node);
         } else {
-            if (mpp.size() == capacity) {
+            if (map.size() == capacity) {
                 Node nodeToDelete = tail.prev;
-                mpp.remove(nodeToDelete.key);
+                map.remove(nodeToDelete.key);
                 deleteNode(nodeToDelete);
             }
             
             Node newNode = new Node(key, value);
-            mpp.put(key, newNode);
+            map.put(key, newNode);
             insertAfterHead(newNode);
         }
     }
